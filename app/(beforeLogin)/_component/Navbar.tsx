@@ -28,7 +28,7 @@ export default function Navbar() {
         <Link href="#">서비스 소개</Link>
         <Link href="#">이용방법</Link>
         <Link href="#">FAQ</Link>
-        <Link href="#" className={styles.loginBtn}>
+        <Link href="/login" className={styles.loginBtn}>
           로그인
         </Link>
       </div>

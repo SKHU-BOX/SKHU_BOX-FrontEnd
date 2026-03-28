@@ -1,0 +1,448 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100dvw;
+  height: 100dvh;
+}
+
+/* ===== 왼쪽 폼 영역 ===== */
+.formPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 640px;
+  min-width: 540px;
+  height: 100dvh;
+  background-color: #f8f8f8;
+  overflow-y: auto;
+}
+
+.formInner {
+  width: 100%;
+  max-width: 360px;
+  padding: 36px 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  cursor: pointer;
+}
+
+/* ===== 오른쪽 빈 영역 ===== */
+.rightPanel {
+  flex: 1;
+  background-color: #fff;
+}
+
+/* ===== 로고 ===== */
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: #1a1a1a;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: #4a8c66;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoIcon {
+  width: 18px;
+  height: 18px;
+  color: white;
+}
+
+/* ===== 스텝 배지 ===== */
+.stepBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a8c66;
+  background: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  border-radius: 20px;
+  padding: 4px 12px;
+  margin-bottom: 16px;
+  width: fit-content;
+}
+
+.stepDot {
+  width: 8px;
+  height: 8px;
+  background: #4a8c66;
+  border-radius: 50%;
+}
+
+/* ===== 타이틀 ===== */
+.title {
+  font-size: 28px;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin: 0 0 6px;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #999;
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+/* ===== 입력 필드 ===== */
+.inputGroup {
+  margin-bottom: 14px;
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+}
+
+.input {
+  width: 100%;
+  height: 36px;
+  min-height: 36px;
+  flex-shrink: 0;
+  padding: 0 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #1a1a1a;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.input::placeholder {
+  color: #ccc;
+}
+
+.input:focus {
+  border-color: #4a8c66;
+}
+
+.inputHint {
+  font-size: 11px;
+  color: #999;
+  margin-top: 4px;
+}
+
+/* 이메일 인풋 (suffix 포함) */
+.emailWrapper {
+  position: relative;
+}
+
+.emailSuffix {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #999;
+  pointer-events: none;
+}
+
+/* 가로 2열 입력 */
+.inputRow {
+  display: flex;
+  gap: 12px;
+}
+
+.inputRow .inputGroup {
+  flex: 1;
+}
+
+/* 셀렉트 */
+.select {
+  width: 100%;
+  height: 36px;
+  min-height: 36px;
+  flex-shrink: 0;
+  padding: 0 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #1a1a1a;
+  background: #fff;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.select:focus {
+  border-color: #4a8c66;
+}
+
+/* ===== 메인 버튼 ===== */
+.primaryBtn {
+  width: 100%;
+  height: 40px;
+  min-height: 40px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3a7d5c, #5cb882);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  font-family: inherit;
+  margin-top: 8px;
+}
+
+.primaryBtn:hover {
+  opacity: 0.9;
+}
+
+/* ===== 하단 링크 텍스트 ===== */
+.bottomText {
+  text-align: center;
+  font-size: 13px;
+  color: #888;
+  margin-top: 16px;
+}
+
+.bottomLink {
+  font-weight: 700;
+  color: #4a8c66;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.bottomLink:hover {
+  text-decoration: underline;
+}
+
+/* ===== 카피라이트 ===== */
+.copyright {
+  margin-top: auto;
+  padding-top: 32px;
+  font-size: 11px;
+  color: #ccc;
+  text-align: left;
+}
+
+/* ===== STEP 2 전용: 이메일 안내 박스 ===== */
+.emailNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #f0f7f2;
+  border: 1px solid #d4e8da;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 28px;
+}
+
+.emailNoticeIcon {
+  width: 36px;
+  height: 36px;
+  background: #4a8c66;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.emailNoticeIcon svg {
+  width: 18px;
+  height: 18px;
+  fill: #fff;
+}
+
+.emailNoticeText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.emailNoticeAddr {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.emailNoticeDesc {
+  font-size: 13px;
+  color: #777;
+  line-height: 1.5;
+}
+
+/* ===== STEP 2 전용: 인증코드 입력 ===== */
+.codeGroup {
+  margin-bottom: 8px;
+}
+
+.codeInputs {
+  display: flex;
+  gap: 10px;
+}
+
+.codeInput {
+  width: 52px;
+  height: 60px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  color: #1a1a1a;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.codeInput:focus {
+  border-color: #4a8c66;
+}
+
+.codeActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ef5350;
+}
+
+.resendBtn {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a8c66;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.resendBtn:hover {
+  text-decoration: underline;
+}
+
+/* ===== STEP 3 전용: 완료 화면 ===== */
+.completeSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 40px;
+}
+
+.checkIcon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #4a8c66, #6bc48f);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.checkIcon svg {
+  width: 40px;
+  height: 40px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.completeTitle {
+  font-size: 28px;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin: 0 0 12px;
+}
+
+.completeSubtitle {
+  font-size: 14px;
+  color: #999;
+  line-height: 1.6;
+  margin: 0 0 32px;
+}
+
+/* 정보 요약 테이블 */
+.infoTable {
+  width: 100%;
+  max-width: 340px;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.infoRow:last-child {
+  border-bottom: none;
+}
+
+.infoLabel {
+  font-size: 14px;
+  color: #999;
+}
+
+.infoValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 768px) {
+  .formPanel {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .formInner {
+    padding: 40px 24px;
+    min-height: auto;
+  }
+
+  .rightPanel {
+    display: none;
+  }
+}
