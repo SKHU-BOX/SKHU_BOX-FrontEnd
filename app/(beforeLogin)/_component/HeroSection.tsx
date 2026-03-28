@@ -3,6 +3,7 @@
 import { useState } from "react";
 import LockerGrid from "./LockerGrid";
 import styles from "./HeroSection.module.css";
+import Link from "next/link";
 
 type LockerStatus = "available" | "occupied" | "mine" | "broken";
 
@@ -79,10 +80,10 @@ export default function HeroSection() {
             SKHUBox에서 더 편하게 !
           </p>
 
-          <a href="#" className={styles.cta}>
+          <Link href="/login" className={styles.cta}>
             사물함 신청하기
             <span className={styles.arrow}>→</span>
-          </a>
+          </Link>
         </div>
 
         {/* 오른쪽: 폰 목업 */}

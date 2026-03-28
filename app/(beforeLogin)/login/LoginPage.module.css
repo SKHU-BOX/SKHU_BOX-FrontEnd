@@ -1,0 +1,218 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100dvw;
+  height: 100dvh;
+}
+
+/* ===== 왼쪽: 로그인 폼 영역 ===== */
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 640px;
+  min-width: 540px;
+  height: 100dvh;
+  background-color: #f8f8f8;
+  overflow-y: auto;
+}
+
+.formInner {
+  width: 100%;
+  max-width: 360px;
+  padding: 50px 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* ===== 로고 ===== */
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: #1a1a1a;
+}
+
+.logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: #4a8c66;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoIcon {
+  width: 18px;
+  height: 18px;
+  color: white;
+}
+
+/* ===== 환영 메시지 ===== */
+.welcome {
+  font-size: 15px;
+  font-weight: 600;
+  color: #4a8c66;
+  margin: 0 0 8px;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin: 0 0 8px;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #999;
+  margin: 0 0 36px;
+}
+
+/* ===== 입력 필드 ===== */
+.inputGroup {
+  margin-bottom: 12px;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.input {
+  width: 100%;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #1a1a1a;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input::placeholder {
+  color: #ccc;
+  text-align: right;
+}
+
+.input:focus {
+  border-color: #4a8c66;
+}
+
+/* ===== 비밀번호 찾기 ===== */
+.forgotRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 28px;
+}
+
+.forgotLink {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4a8c66;
+  text-decoration: none;
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+/* ===== 로그인 버튼 ===== */
+.loginBtn {
+  width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3a7d5c, #5cb882);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.loginBtn:hover {
+  opacity: 0.9;
+}
+
+/* ===== 구분선 ===== */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 28px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e0e0e0;
+}
+
+.dividerText {
+  font-size: 13px;
+  color: #bbb;
+  white-space: nowrap;
+}
+
+/* ===== 회원가입 ===== */
+.signupText {
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+}
+
+.signupLink {
+  font-weight: 700;
+  color: #4a8c66;
+  text-decoration: none;
+}
+
+.signupLink:hover {
+  text-decoration: underline;
+}
+
+/* ===== 카피라이트 ===== */
+.copyright {
+  margin-top: auto;
+  padding-top: 60px;
+  font-size: 12px;
+  color: #ccc;
+  text-align: center;
+}
+
+/* ===== 오른쪽 빈 영역 ===== */
+.rightPanel {
+  flex: 1;
+  background-color: #fff;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 768px) {
+  .loginForm {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .formInner {
+    padding: 40px 24px;
+  }
+
+  .rightPanel {
+    display: none;
+  }
+}
