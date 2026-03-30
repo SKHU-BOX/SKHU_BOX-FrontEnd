@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./LoginPage.module.css";
 import { FiBox } from "react-icons/fi";
-import Link from "next/link";
 
 type Role = null | "student" | "admin";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [role, setRole] = useState<Role>(null);
 
   return (
@@ -15,12 +16,12 @@ export default function LoginPage() {
       <div className={styles.loginForm}>
         <div className={styles.formInner}>
           {/* 로고 */}
-          <Link href="/" className={styles.logoSection}>
+          <div className={styles.logoSection}>
             <div className={styles.logo}>
               <FiBox className={styles.logoIcon} />
             </div>
             SKHUBOX
-          </Link>
+          </div>
 
           {/* 환영 메시지 */}
           <p className={styles.welcome}>환영합니다</p>
@@ -92,14 +93,27 @@ export default function LoginPage() {
           {/* ===== 역할 선택 후: 로그인 폼 ===== */}
           {role !== null && (
             <>
-              <p className={styles.subtitle}>{role === "student" ? "학생으로 로그인하기" : "관리자로 로그인하기"}</p>
+              <p className={styles.subtitle}>{role === "student" ? "학번" : "관리자 ID"}으로 로그인하세요</p>
+
+              {/* 역할 선택 표시 + 변경 */}
+              <div className={styles.selectedRole}>
+                <span className={styles.selectedRoleLabel}>{role === "student" ? "🎓 학생" : "🔐 관리자"}</span>
+                <button className={styles.changeRoleBtn} onClick={() => setRole(null)}>
+                  변경
+                </button>
+              </div>
 
               {/* 입력 폼 */}
               <div className={styles.inputGroup}>
                 <label className={styles.label} htmlFor="studentId">
-                  학번
+                  {role === "student" ? "학번" : "관리자 ID"}
                 </label>
-                <input id="studentId" className={styles.input} type="text" placeholder="202111111" />
+                <input
+                  id="studentId"
+                  className={styles.input}
+                  type="text"
+                  placeholder={role === "student" ? "202111111" : "admin"}
+                />
               </div>
 
               <div className={styles.inputGroup}>
@@ -117,7 +131,15 @@ export default function LoginPage() {
               </div>
 
               {/* 로그인 버튼 */}
-              <button className={styles.loginBtn}>로그인</button>
+              <button
+                className={styles.loginBtn}
+                onClick={() => {
+                  document.cookie = `role=${role}; path=/`;
+                  router.push(role === "admin" ? "/admindashboard" : "/dashboard");
+                }}
+              >
+                로그인
+              </button>
 
               {/* 구분선 */}
               <div className={styles.divider}>
