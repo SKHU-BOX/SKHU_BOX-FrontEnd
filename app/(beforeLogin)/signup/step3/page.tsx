@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FiBox } from "react-icons/fi";
 import styles from "../signup.module.css";
@@ -7,10 +8,8 @@ import Link from "next/link";
 
 export default function SignupStep3() {
   const router = useRouter();
-
-  const handleGoToLocker = () => {
-    router.push("/");
-  };
+  type Role = null | "student" | "admin";
+  const [role, setRole] = useState<Role>(null);
 
   return (
     <div className={styles.container}>
@@ -62,7 +61,14 @@ export default function SignupStep3() {
           </div>
 
           {/* 사물함 신청하러 가기 */}
-          <button className={styles.primaryBtn} onClick={handleGoToLocker}>
+          <button
+            className={styles.primaryBtn}
+            onClick={() => {
+              // MVP: 쿠키에 role 저장 후 대시보드로 이동
+              document.cookie = `role=${role}; path=/`;
+              router.push("/dashboard");
+            }}
+          >
             사물함 신청하러 가기
           </button>
 
