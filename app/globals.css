@@ -1,26 +1,149 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * ✅ Tailwind v4에서는 tailwind.config.ts 대신
+ * @theme 블록 안에서 커스텀 값을 직접 정의해.
+ * 
+ * 사용법은 동일: bg-brand, text-brand-dark, animate-fade-up 등
+ */
+@theme {
+  /* 커스텀 컬러 */
+  --color-brand: #4a8c66;
+  --color-brand-dark: #1a6b3c;
+  --color-brand-mid: #2e8b57;
+  --color-brand-light: #5cb882;
+  --color-brand-lighter: #8ed4a8;
+  --color-brand-lightest: #c8f0d4;
+  --color-brand-accent: #ffdc64;
+
+  --color-locker-available: #4caf50;
+  --color-locker-occupied: #ef5350;
+  --color-locker-mine: #2196f3;
+  --color-locker-broken: #bdbdbd;
+
+  /* 커스텀 폰트 */
+  --font-noto: "Noto Sans KR", sans-serif;
+
+  /* 커스텀 애니메이션 */
+  --animate-fade-up: fade-up 0.8s ease forwards;
+  --animate-fade-right: fade-right 1s ease forwards;
+  --animate-float: float 4s ease-in-out infinite;
+  --animate-float-slow: float 5s ease-in-out infinite;
+  --animate-float-wave: float-wave 8s ease-in-out infinite;
+  --animate-float-obj: float-obj 6s ease-in-out infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* 키프레임 정의 */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes fade-right {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes float-wave {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(20px, -15px) scale(1.03);
+  }
+}
+
+@keyframes float-obj {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+/* ===== 히어로 배경 — Tailwind 유틸리티로 표현 불가능한 복합 스타일 ===== */
+@layer components {
+  .hero-bg-gradient {
+    background: linear-gradient(135deg, #1a6b3c 0%, #2e8b57 25%, #3da06a 45%, #5cb882 65%, #8ed4a8 85%, #c8f0d4 100%);
+  }
+
+  .hero-bg-gradient::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 80%, rgba(30, 100, 60, 0.6) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 75% 20%, rgba(100, 200, 140, 0.4) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(200, 240, 210, 0.2) 0%, transparent 50%);
+  }
+
+  .hero-bg-gradient::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 90% 70% at 80% 90%, rgba(46, 139, 87, 0.5) 0%, transparent 60%);
+  }
+
+  .phone-shadow {
+    box-shadow:
+      0 30px 80px rgba(0, 0, 0, 0.25),
+      0 0 0 2px rgba(255, 255, 255, 0.15),
+      inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* ===== animation-delay 유틸리티 ===== */
+@layer utilities {
+  .delay-200 {
+    animation-delay: 0.2s;
+  }
+  .delay-400 {
+    animation-delay: 0.4s;
+  }
+  .delay-600 {
+    animation-delay: 0.6s;
+  }
+  .delay-800 {
+    animation-delay: 0.8s;
+  }
+  .delay-1000 {
+    animation-delay: -1s;
+  }
+  .delay-2000 {
+    animation-delay: -2s;
+  }
+  .delay-3000 {
+    animation-delay: -3s;
+  }
+  .delay-4000 {
+    animation-delay: -4s;
+  }
+  .delay-5000 {
+    animation-delay: -5s;
+  }
 }
