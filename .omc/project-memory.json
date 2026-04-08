@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1774620326544,
+  "lastScanned": 1775445876706,
   "projectRoot": "c:\\Projects\\SKHU_BOX-FrontEnd",
   "techStack": {
     "languages": [
@@ -63,8 +63,7 @@
     "isMonorepo": false,
     "workspaces": [],
     "mainDirectories": [
-      "app",
-      "public"
+      "app"
     ],
     "gitBranches": {
       "defaultBranch": "main",
@@ -76,22 +75,33 @@
     "app": {
       "path": "app",
       "purpose": "Application code",
-      "fileCount": 3,
-      "lastAccessed": 1774620326468,
+      "fileCount": 2,
+      "lastAccessed": 1775445876143,
       "keyFiles": [
         "globals.css",
-        "layout.tsx",
-        "page.tsx"
+        "layout.tsx"
       ]
-    },
-    "public": {
-      "path": "public",
-      "purpose": "Public files",
-      "fileCount": 0,
-      "lastAccessed": 1774620326488,
-      "keyFiles": []
     }
   },
-  "hotPaths": [],
+  "hotPaths": [
+    {
+      "path": "package.json",
+      "accessCount": 2,
+      "lastAccessed": 1775447104827,
+      "type": "file"
+    },
+    {
+      "path": "postcss.config.mjs",
+      "accessCount": 1,
+      "lastAccessed": 1775446815713,
+      "type": "file"
+    },
+    {
+      "path": "app\\globals.css",
+      "accessCount": 1,
+      "lastAccessed": 1775446816621,
+      "type": "file"
+    }
+  ],
   "userDirectives": []
 }

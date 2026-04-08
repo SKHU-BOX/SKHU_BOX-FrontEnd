@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { FiBox } from "react-icons/fi";
-import styles from "./Sidebar.module.css";
 
 interface MenuItem {
   label: string;
@@ -145,7 +144,7 @@ const adminMenus: MenuGroup[] = [
     items: [
       {
         label: "사물함 관리",
-        href: "/admin/lockers",
+        href: "/lockers",
         icon: (
           <svg
             viewBox="0 0 24 24"
@@ -162,7 +161,7 @@ const adminMenus: MenuGroup[] = [
       },
       {
         label: "민원 관리",
-        href: "/admin/complaints",
+        href: "/complaints",
         badge: 3,
         icon: (
           <svg
@@ -179,7 +178,7 @@ const adminMenus: MenuGroup[] = [
       },
       {
         label: "학생 관리",
-        href: "/admin/students",
+        href: "/students",
         icon: (
           <svg
             viewBox="0 0 24 24"
@@ -202,7 +201,7 @@ const adminMenus: MenuGroup[] = [
     items: [
       {
         label: "데이터/통계",
-        href: "/admin/analytics",
+        href: "/analytics",
         icon: (
           <svg
             viewBox="0 0 24 24"
@@ -220,7 +219,7 @@ const adminMenus: MenuGroup[] = [
       },
       {
         label: "설정",
-        href: "/admin/settings",
+        href: "/settings",
         icon: (
           <svg
             viewBox="0 0 24 24"
@@ -248,8 +247,8 @@ interface SidebarProps {
 export default function Sidebar({ role, userName = "사용자", userDept = "IT융합자율학부" }: SidebarProps) {
   const pathname = usePathname();
   const menus = role === "student" ? studentMenus : adminMenus;
-  const allItems = menus.flatMap((group) => group.items);
-  const isDark = role === "admin";
+  const allItems = menus.flatMap((g) => g.items);
+  const dark = role === "admin";
 
   const isActive = (href: string) => {
     if (href === "/dashboard" || href === "/admindashboard") {
@@ -258,73 +257,180 @@ export default function Sidebar({ role, userName = "사용자", userDept = "IT�
     return pathname.includes(href);
   };
 
+  /*
+   * ✅ 다크/라이트 테마 전환
+   * CSS module에서는 .sidebar.dark 로 오버라이드했지만
+   * Tailwind에서는 삼항연산자로 클래스를 통째로 바꿔
+   */
+
   return (
     <>
       {/* ===== 모바일 상단 로고 바 ===== */}
-      <header className={`${styles.mobileHeader} ${isDark ? styles.dark : ""}`}>
-        <div className={styles.mobileLogoWrap}>
-          <div className={styles.logo}>
-            <FiBox className={styles.logoIcon} />
+      <header
+        className={`
+        hidden max-md:flex items-center
+        fixed top-0 inset-x-0 h-14 px-5 z-50
+        border-b
+        ${dark ? "bg-[#1a1e23] border-[#2a2e33]" : "bg-white border-gray-100"}
+      `}
+      >
+        <div className="flex items-center gap-2">
+          <div className="w-[30px] h-[30px] rounded-lg bg-brand flex items-center justify-center">
+            <FiBox className="w-[15px] h-[15px] text-white" />
           </div>
-          <span className={styles.logoText}>SKHUBox</span>
+          <span className={`text-base font-extrabold ${dark ? "text-gray-100" : "text-gray-900"}`}>SKHUBox</span>
         </div>
       </header>
 
       {/* ===== 데스크탑 사이드바 ===== */}
-      <aside className={`${styles.sidebar} ${isDark ? styles.dark : ""}`}>
-        {/* 로고 + 역할 배지 */}
-        <div className={styles.logoSection}>
-          <div className={styles.logoRow}>
-            <div className={styles.logo}>
-              <FiBox className={styles.logoIcon} />
+      <aside
+        className={`
+        w-[220px] min-w-[220px] h-dvh
+        flex flex-col py-7
+        fixed left-0 top-0 z-50
+        border-r
+        max-md:hidden
+        ${
+          dark
+            ? "bg-[#1a1e23] border-[#2a2e33]" /* 관리자: 다크 배경 */
+            : "bg-white border-gray-100" /* 학생: 라이트 배경 */
+        }
+      `}
+      >
+        {/* 로고 + ADMIN 배지 */}
+        <div className="px-6 mb-7">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-[10px] bg-brand flex items-center justify-center shrink-0">
+              <FiBox className="w-[18px] h-[18px] text-white" />
             </div>
-            <span className={styles.logoText}>SKHUBox</span>
+            <span className={`text-lg font-extrabold tracking-wide ${dark ? "text-gray-100" : "text-gray-900"}`}>
+              SKHUBox
+            </span>
           </div>
-          {isDark && <span className={styles.adminBadge}>ADMIN</span>}
+          {dark && (
+            <span
+              className="
+              inline-flex items-center mt-2.5
+              text-[11px] font-bold text-brand-light
+              bg-brand/15 px-2.5 py-0.5 rounded-md tracking-wider
+            "
+            >
+              ADMIN
+            </span>
+          )}
         </div>
 
-        {/* 메뉴 */}
-        <nav className={styles.nav}>
+        {/* 메뉴 그룹 */}
+        <nav className="flex-1 flex flex-col gap-6">
           {menus.map((group) => (
-            <div key={group.title} className={styles.menuGroup}>
-              <span className={styles.menuGroupTitle}>{group.title}</span>
-              <ul className={styles.menuList}>
-                {group.items.map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href} className={`${styles.menuItem} ${isActive(item.href) ? styles.active : ""}`}>
-                      <span className={styles.menuIcon}>{item.icon}</span>
-                      <span className={styles.menuLabel}>{item.label}</span>
-                      {item.badge && <span className={styles.menuBadge}>{item.badge}</span>}
-                    </Link>
-                  </li>
-                ))}
+            <div key={group.title} className="flex flex-col">
+              <span
+                className={`
+                text-[11px] font-bold tracking-widest px-6 mb-2
+                ${dark ? "text-gray-600" : "text-gray-400"}
+              `}
+              >
+                {group.title}
+              </span>
+              <ul className="list-none m-0 p-0 flex flex-col gap-0.5">
+                {group.items.map((item) => {
+                  const active = isActive(item.href);
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className={`
+                          flex items-center gap-2.5 px-6 py-2.5
+                          text-sm font-medium no-underline
+                          border-l-[3px] transition-all duration-150
+                          ${
+                            active
+                              ? dark
+                                ? "text-[#6bc48f] bg-brand/10 border-l-brand font-bold"
+                                : "text-brand bg-[#f0f7f2] border-l-brand font-bold"
+                              : dark
+                                ? "text-gray-500 border-l-transparent hover:text-gray-300 hover:bg-white/[0.04]"
+                                : "text-gray-500 border-l-transparent hover:text-gray-900 hover:bg-[#f8f9f8]"
+                          }
+                        `}
+                      >
+                        <span className="w-5 h-5 flex items-center justify-center shrink-0 [&>svg]:w-[18px] [&>svg]:h-[18px]">
+                          {item.icon}
+                        </span>
+                        <span className="flex-1">{item.label}</span>
+                        {item.badge && (
+                          <span
+                            className="
+                            text-[11px] font-bold text-white bg-red-500
+                            w-5 h-5 rounded-full
+                            flex items-center justify-center shrink-0
+                          "
+                          >
+                            {item.badge}
+                          </span>
+                        )}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
         </nav>
 
         {/* 유저 정보 */}
-        <div className={styles.userInfo}>
-          <div className={styles.userAvatar}>{userName.charAt(0)}</div>
-          <div className={styles.userText}>
-            <span className={styles.userName}>{userName}</span>
-            <span className={styles.userDept}>{userDept}</span>
+        <div
+          className={`
+          flex items-center gap-3 px-6 pt-5 mt-auto
+          border-t
+          ${dark ? "border-[#2a2e33]" : "border-gray-100"}
+        `}
+        >
+          <div
+            className={`
+            w-[38px] h-[38px] rounded-full
+            text-[15px] font-bold
+            flex items-center justify-center shrink-0
+            ${dark ? "bg-brand/20 text-[#6bc48f]" : "bg-green-50 text-brand"}
+          `}
+          >
+            {userName.charAt(0)}
+          </div>
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className={`text-sm font-bold ${dark ? "text-gray-200" : "text-gray-900"}`}>{userName}</span>
+            <span className={`text-[11px] truncate ${dark ? "text-gray-600" : "text-gray-400"}`}>{userDept}</span>
           </div>
         </div>
       </aside>
 
       {/* ===== 모바일 하단 탭바 ===== */}
-      <nav className={`${styles.bottomTab} ${isDark ? styles.dark : ""}`}>
-        {allItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`${styles.tabItem} ${isActive(item.href) ? styles.tabActive : ""}`}
-          >
-            <span className={styles.tabIcon}>{item.icon}</span>
-            <span className={styles.tabLabel}>{item.label}</span>
-          </Link>
-        ))}
+      <nav
+        className={`
+        hidden max-md:flex items-center justify-around
+        fixed bottom-0 inset-x-0 h-16 px-1 z-50
+        border-t pb-[env(safe-area-inset-bottom)]
+        ${dark ? "bg-[#1a1e23] border-[#2a2e33]" : "bg-white border-gray-100"}
+      `}
+      >
+        {allItems.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`
+                flex flex-col items-center justify-center gap-1
+                flex-1 py-2 no-underline transition-colors duration-150
+                ${active ? (dark ? "text-[#6bc48f]" : "text-brand") : dark ? "text-gray-600" : "text-gray-400"}
+              `}
+            >
+              <span className="w-[22px] h-[22px] flex items-center justify-center [&>svg]:w-[22px] [&>svg]:h-[22px]">
+                {item.icon}
+              </span>
+              <span className="text-[10px] font-semibold whitespace-nowrap">{item.label}</span>
+            </Link>
+          );
+        })}
       </nav>
     </>
   );

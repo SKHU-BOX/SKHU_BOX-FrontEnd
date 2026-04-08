@@ -1,80 +1,59 @@
 "use client";
-
 import { useState } from "react";
-import styles from "./TodayHistory.module.css";
 
 type Tab = "전체" | "신청" | "반납" | "기타";
-
-interface HistoryItem {
-  type: Tab;
-  icon: string;
-  iconColor: string;
-  text: string;
-  dept: string;
-  studentId: string;
-  time: string;
-  badge: string;
-  badgeColor: string;
-}
-
-const items: HistoryItem[] = [
+const items = [
   {
-    type: "신청",
+    type: "신청" as Tab,
     icon: "✓",
-    iconColor: "#4a8c66",
+    iconColor: "text-brand",
     text: "이서현님 → 일만관 3A-12 자동 배정",
     dept: "1 · 소프트웨어공학과 · 20231045",
-    studentId: "",
     time: "2분 전",
     badge: "자동",
-    badgeColor: "#4a8c66",
+    badgeColor: "text-brand",
   },
   {
-    type: "신청",
+    type: "신청" as Tab,
     icon: "✓",
-    iconColor: "#4a8c66",
+    iconColor: "text-brand",
     text: "박준혁님 → 미가엘관 M2A-06 자동 배정",
     dept: "1 · 사회복지학과 · 20240312",
-    studentId: "",
     time: "15분 전",
     badge: "자동",
-    badgeColor: "#4a8c66",
+    badgeColor: "text-brand",
   },
   {
-    type: "반납",
+    type: "반납" as Tab,
     icon: "↩",
-    iconColor: "#2196f3",
+    iconColor: "text-blue-500",
     text: "송민지님 → 일만관 2B-11 반납 처리",
     dept: "1 · 영어학과 · 20211567",
-    studentId: "",
     time: "32분 전",
     badge: "수동",
-    badgeColor: "#ff9800",
+    badgeColor: "text-orange-500",
   },
   {
-    type: "신청",
+    type: "신청" as Tab,
     icon: "✓",
-    iconColor: "#4a8c66",
+    iconColor: "text-brand",
     text: "김지은님 → 일만관 2B-03 자동 배정",
     dept: "1 · IT융합자율학부 · 20220876",
-    studentId: "",
     time: "1시간 전",
     badge: "자동",
-    badgeColor: "#4a8c66",
+    badgeColor: "text-brand",
   },
   {
-    type: "기타",
+    type: "기타" as Tab,
     icon: "⚠",
-    iconColor: "#ff9800",
+    iconColor: "text-orange-500",
     text: "새뮤엘관 S1A-03 이용기간 만료 자동 해제",
     dept: "",
-    studentId: "",
     time: "2시간 전",
     badge: "자동",
-    badgeColor: "#4a8c66",
+    badgeColor: "text-brand",
   },
 ];
-
 const tabs: { label: Tab; count: number }[] = [
   { label: "전체", count: 27 },
   { label: "신청", count: 18 },
@@ -84,45 +63,41 @@ const tabs: { label: Tab; count: number }[] = [
 
 export default function TodayHistory() {
   const [activeTab, setActiveTab] = useState<Tab>("전체");
-
-  const filtered = activeTab === "전체" ? items : items.filter((item) => item.type === activeTab);
+  const filtered = activeTab === "전체" ? items : items.filter((it) => it.type === activeTab);
 
   return (
-    <div className={styles.card}>
-      <div className={styles.header}>
-        <h3 className={styles.title}>오늘의 처리 내역</h3>
-        <button className={styles.viewAll}>전체보기 &gt;</button>
+    <div className="bg-white rounded-2xl p-[22px] shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
+      <div className="flex items-center justify-between mb-3.5">
+        <h3 className="text-[15px] font-extrabold text-gray-900">오늘의 처리 내역</h3>
+        <button className="text-xs text-gray-400 bg-transparent border-none cursor-pointer font-sans">
+          전체보기 &gt;
+        </button>
       </div>
-
-      <div className={styles.tabs}>
-        {tabs.map((tab) => (
+      <div className="flex gap-1.5 mb-4">
+        {tabs.map((t) => (
           <button
-            key={tab.label}
-            className={`${styles.tab} ${activeTab === tab.label ? styles.tabActive : ""}`}
-            onClick={() => setActiveTab(tab.label)}
+            key={t.label}
+            onClick={() => setActiveTab(t.label)}
+            className={`text-xs font-semibold px-3 py-1.5 rounded-lg border-none cursor-pointer font-sans transition-colors
+              ${activeTab === t.label ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-400"}`}
           >
-            {tab.label} ({tab.count})
+            {t.label} ({t.count})
           </button>
         ))}
       </div>
-
-      <ul className={styles.list}>
-        {filtered.map((item, i) => (
-          <li key={i} className={styles.item}>
-            <div className={styles.itemLeft}>
-              <span className={styles.itemIcon} style={{ color: item.iconColor }}>
-                {item.icon}
-              </span>
-              <div className={styles.itemContent}>
-                <span className={styles.itemText}>{item.text}</span>
-                {item.dept && <span className={styles.itemMeta}>{item.dept}</span>}
+      <ul className="list-none m-0 p-0 flex flex-col">
+        {filtered.map((it, i) => (
+          <li key={i} className="flex items-start justify-between gap-3 py-3 border-b border-gray-50 last:border-b-0">
+            <div className="flex items-start gap-2.5 flex-1 min-w-0">
+              <span className={`text-sm mt-0.5 shrink-0 ${it.iconColor}`}>{it.icon}</span>
+              <div className="flex flex-col gap-0.5 min-w-0">
+                <span className="text-[13px] font-semibold text-gray-900">{it.text}</span>
+                {it.dept && <span className="text-[11px] text-gray-300">{it.dept}</span>}
               </div>
             </div>
-            <div className={styles.itemRight}>
-              <span className={styles.itemTime}>{item.time}</span>
-              <span className={styles.badge} style={{ color: item.badgeColor }}>
-                {item.badge}
-              </span>
+            <div className="flex flex-col items-end gap-1 shrink-0">
+              <span className="text-[11px] text-gray-300 whitespace-nowrap">{it.time}</span>
+              <span className={`text-[11px] font-bold ${it.badgeColor}`}>{it.badge}</span>
             </div>
           </li>
         ))}
