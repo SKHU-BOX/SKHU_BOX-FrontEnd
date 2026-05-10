@@ -118,7 +118,7 @@ export default function FindPasswordPage() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/password-reset/confirm`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, newPassword }),
+        body: JSON.stringify({ code: token, newPassword }),
       });
 
       const data = await res.json();
