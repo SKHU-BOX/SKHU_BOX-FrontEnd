@@ -119,7 +119,7 @@ export default function QueueModeControl() {
 
       {/* 우측: 스킵 버튼 + 토글 스위치 */}
       <div className="flex items-center gap-3">
-        {/* 대기열 ON일 때만 스킵 버튼 표시 */}
+        {/* 대기열 ON일 때만 스킵 버튼 표시 
         {enabled && (
           <button
             onClick={() => setShowSkipModal(true)}
@@ -128,6 +128,7 @@ export default function QueueModeControl() {
             대기열 스킵
           </button>
         )}
+          */}
 
         <button
           onClick={handleToggle}
