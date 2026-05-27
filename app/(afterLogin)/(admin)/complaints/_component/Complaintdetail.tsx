@@ -9,7 +9,6 @@ interface ComplaintDetailProps {
 }
 
 const statusBadge: Record<ComplaintStatus, { style: string; label: string }> = {
-  대기중: { style: "bg-red-500 text-white", label: "대기중" },
   확인중: { style: "bg-yellow-500 text-white", label: "확인중" },
   처리중: { style: "bg-blue-500 text-white", label: "처리중" },
   완료: { style: "bg-green-600 text-white", label: "완료" },
@@ -93,7 +92,6 @@ export default function ComplaintDetail({ complaint, onStatusChange }: Complaint
             className="h-[34px] px-3 pr-8 border border-gray-200 rounded-lg text-xs font-semibold text-gray-900 bg-white appearance-none outline-none font-sans focus:border-brand transition-colors cursor-pointer"
             style={selectArrow}
           >
-            <option value="대기중">대기중</option>
             <option value="확인중">확인중</option>
             <option value="처리중">처리중</option>
             <option value="완료">완료</option>

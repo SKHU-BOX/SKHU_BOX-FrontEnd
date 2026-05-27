@@ -8,7 +8,7 @@ export interface ComplaintApiItem {
   createdAt: string;
 }
 
-export type ComplaintStatus = "대기중" | "확인중" | "처리중" | "완료";
+export type ComplaintStatus = "확인중" | "처리중" | "완료";
 
 export interface ComplaintItem {
   id: number;

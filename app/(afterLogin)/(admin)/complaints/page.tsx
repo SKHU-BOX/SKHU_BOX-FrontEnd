@@ -12,9 +12,6 @@ import ComplaintDetail from "./_component/Complaintdetail";
 // 백엔드 status → 프론트 status 매핑
 function mapApiStatus(apiStatus: string): ComplaintStatus {
   switch (apiStatus) {
-    case "PENDING":
-    case "대기중":
-      return "대기중";
     case "CONFIRMED":
     case "확인중":
       return "확인중";
@@ -25,13 +22,22 @@ function mapApiStatus(apiStatus: string): ComplaintStatus {
     case "완료":
       return "완료";
     default:
-      return "대기중";
+      return "확인중";
   }
 }
 
 // 프론트 status → 백엔드 status 매핑
 function toApiStatus(status: ComplaintStatus): string {
-  return status; // 이미 한글이니까 그대로 전송
+  switch (status) {
+    case "확인중":
+      return "CONFIRMED";
+    case "처리중":
+      return "IN_PROGRESS";
+    case "완료":
+      return "RESOLVED";
+    default:
+      return "PENDING";
+  }
 }
 
 function formatDate(iso: string): string {
@@ -119,7 +125,6 @@ export default function AdminComplaintsPage() {
   // 탭별 카운트
   const counts: Record<string, number> = {
     전체: complaints.length,
-    대기중: complaints.filter((c) => c.status === "대기중").length,
     확인중: complaints.filter((c) => c.status === "확인중").length,
     처리중: complaints.filter((c) => c.status === "처리중").length,
     완료: complaints.filter((c) => c.status === "완료").length,
