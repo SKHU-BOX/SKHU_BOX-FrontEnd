@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { buildings, type LockerApiItem } from "../config";
 import { fetchWithAuth } from "@/app/lib/fetchWithAuth";
 import toast from "react-hot-toast";
@@ -52,12 +52,10 @@ export default function LockerSelectPage() {
   const [selectedZoneIdx, setSelectedZoneIdx] = useState(0);
   const [selectedLocker, setSelectedLocker] = useState<string | null>(null);
 
-  // 대기열 모달 상태
-  const [queueInfo, setQueueInfo] = useState<{
-    position: number;
-    lockerId: number;
-    lockerNumber: string;
-  } | null>(null);
+  // 대기열 상태
+  const [queueEnabled, setQueueEnabled] = useState(false);
+  const [myRank, setMyRank] = useState(0);
+  const [showQueueModal, setShowQueueModal] = useState(false);
 
   const currentBuilding = buildings[selectedBuildingIdx];
   const currentFloor = currentBuilding.floors[selectedFloorIdx];
@@ -68,7 +66,6 @@ export default function LockerSelectPage() {
     try {
       const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/api/lockers`);
       const data = await res.json();
-
       if (data.success) {
         setAllLockers(data.data);
       } else {
@@ -81,9 +78,73 @@ export default function LockerSelectPage() {
     }
   };
 
+  // 대기열 모드 확인 + 내 순위 조회
+  const checkQueue = useCallback(async () => {
+    try {
+      // 대기열 모드 확인
+      const modeRes = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/queue-mode`);
+      const modeData = await modeRes.json();
+
+      if (modeData.success && modeData.data.enabled) {
+        setQueueEnabled(true);
+
+        // 내 순위 조회
+        const rankRes = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/api/lockers/queue/my-rank`);
+        const rankData = await rankRes.json();
+
+        if (rankData.success) {
+          const rank = rankData.data.rank || rankData.data;
+          setMyRank(rank);
+
+          // 500번 초과면 대기열 모달 표시
+          if (rank > 500) {
+            setShowQueueModal(true);
+          } else {
+            setShowQueueModal(false);
+          }
+        }
+      } else {
+        setQueueEnabled(false);
+        setShowQueueModal(false);
+      }
+    } catch {
+      // 대기열 확인 실패 시 무시 (일반 모드로 동작)
+    }
+  }, []);
+
+  // 페이지 로드 시 사물함 + 대기열 조회
   useEffect(() => {
     loadLockers();
-  }, []);
+    checkQueue();
+  }, [checkQueue]);
+
+  // 대기열 모달이 열려있을 때 3초마다 순위 폴링
+  useEffect(() => {
+    if (!showQueueModal) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const rankRes = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/api/lockers/queue/my-rank`);
+        const rankData = await rankRes.json();
+
+        if (rankData.success) {
+          const rank = rankData.data.rank || rankData.data;
+          setMyRank(rank);
+
+          // 500 이하로 떨어지면 모달 닫기 + 사물함 새로고침
+          if (rank <= 500) {
+            setShowQueueModal(false);
+            toast.success("대기가 완료되었습니다! 사물함을 선택해 주세요.");
+            await loadLockers();
+          }
+        }
+      } catch {
+        // 폴링 실패 시 무시
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [showQueueModal]);
 
   // 사물함 예약
   const handleReserve = async () => {
@@ -101,21 +162,16 @@ export default function LockerSelectPage() {
       const data = await res.json();
 
       if (data.success) {
-        // 대기번호가 2 이상이면 대기열 모달 표시
-        if (data.data?.position && data.data.position > 1) {
-          setQueueInfo({
-            position: data.data.position,
-            lockerId: locker.apiId,
-            lockerNumber: locker.id,
-          });
-        } else {
-          // 1번이거나 position 없으면 바로 예약 성공
-          toast.success(`${selectedLocker} 사물함이 예약되었습니다`);
-          setSelectedLocker(null);
-          await loadLockers();
-        }
+        toast.success(`${selectedLocker} 사물함이 예약되었습니다`);
+        setSelectedLocker(null);
+        await loadLockers();
       } else {
-        toast.error(data.message || "예약에 실패했습니다");
+        // L009: 다른 사람이 이미 예약 시도 중
+        if (data.code === "L009") {
+          toast.error("다른 사람이 이미 예약을 시도 중입니다. 잠시 후 다시 시도해 주세요.");
+        } else {
+          toast.error(data.message || "예약에 실패했습니다");
+        }
       }
     } catch {
       toast.error("서버 연결에 실패했습니다");
@@ -234,6 +290,16 @@ export default function LockerSelectPage() {
       <div>
         <h1 className="text-2xl font-black text-gray-900 tracking-tight mb-1">사물함 신청</h1>
         <p className="text-[13px] text-gray-400">원하는 층과 구역을 선택한 뒤, 사물함을 골라주세요</p>
+
+        {/* 대기열 모드 ON 안내 배너 */}
+        {queueEnabled && myRank <= 500 && (
+          <div className="flex items-center gap-2.5 mt-3 px-4 py-3 bg-[#fff8e1] border border-[#ffd43b]/30 rounded-xl">
+            <span className="text-base">⚡</span>
+            <span className="text-[13px] text-[#e67700] font-semibold">
+              대기열 모드 운영 중 · 현재 {myRank}번째 · 동시 접근 시 선착순 예약
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="flex gap-4 items-start max-[900px]:flex-col">
@@ -455,21 +521,7 @@ export default function LockerSelectPage() {
       </div>
 
       {/* 대기열 모달 */}
-      {queueInfo && (
-        <QueueWaitingModal
-          isOpen={!!queueInfo}
-          position={queueInfo.position}
-          lockerId={queueInfo.lockerId}
-          lockerNumber={queueInfo.lockerNumber}
-          onSuccess={async () => {
-            toast.success(`${queueInfo.lockerNumber} 사물함이 예약되었습니다`);
-            setQueueInfo(null);
-            setSelectedLocker(null);
-            await loadLockers();
-          }}
-          onClose={() => setQueueInfo(null)}
-        />
-      )}
+      <QueueWaitingModal isOpen={showQueueModal} rank={myRank} onClose={() => setShowQueueModal(false)} />
     </div>
   );
 }
